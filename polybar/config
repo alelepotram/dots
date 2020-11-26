@@ -1,0 +1,242 @@
+;==========================================================
+;
+;
+;   ██████╗  ██████╗ ██╗  ██╗   ██╗██████╗  █████╗ ██████╗
+;   ██╔══██╗██╔═══██╗██║  ╚██╗ ██╔╝██╔══██╗██╔══██╗██╔══██╗
+;   ██████╔╝██║   ██║██║   ╚████╔╝ ██████╔╝███████║██████╔╝
+;   ██╔═══╝ ██║   ██║██║    ╚██╔╝  ██╔══██╗██╔══██║██╔══██╗
+;   ██║     ╚██████╔╝███████╗██║   ██████╔╝██║  ██║██║  ██║
+;   ╚═╝      ╚═════╝ ╚══════╝╚═╝   ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝
+;
+;
+;==========================================================
+
+[colors]
+;background = ${xrdb:color0:#222}
+transparent = #00000000
+background = ${xrdb:background}
+background-alt = #444
+;foreground = ${xrdb:color7:#222}
+foreground = ${xrdb:foreground}
+foreground-alt = #c179d9
+primary = #4f9ea8
+secondary = #e60053
+alert = #bd2c40
+
+
+[bar/main]
+width = 99%
+height = 42
+fixed-center = true
+offset-x = 10
+offset-y = 10
+
+background = ${colors.background}
+foreground = ${colors.foreground}
+
+line-size = 0
+line-color = #f00
+
+padding-left = 4
+padding-right = 4
+
+module-margin-left = 2
+module-margin-right = 2
+
+font-0 = Roboto:pixelsize=13;2
+font-1 = unifont:fontformat=truetype:size=8:antialias=false;1
+
+modules-left = battery cpu xwindow 
+modules-center = bspwm
+modules-right = ram wlan bluetooth eth pulseaudio date
+
+;tray-position = right
+;tray-padding = 2
+
+wm-restack = bspwm
+
+cursor-click = pointer
+cursor-scroll = ns-resize
+
+[module/xwindow]
+type = internal/xwindow
+label = %title:0:30:...%
+
+[module/bspwm]
+type = internal/bspwm
+
+label-focused = %index%
+label-focused-padding = 2
+
+label-occupied = %index%
+label-occupied-padding = 2
+
+label-urgent = 
+label-urgent-background = ${colors.alert}
+label-urgent-padding = 2
+
+label-empty = 
+label-empty-foreground = ${colors.foreground-alt}
+label-empty-padding = 2
+
+[module/wlan]
+type = internal/network
+interface = wlp1s0
+interval = 3.0
+
+format-connected = <ramp-signal> <label-connected>
+format-connected-underline = #9f78e1
+label-connected = %essid%
+
+format-disconnected =
+
+ramp-signal-0 = 直
+ramp-signal-1 = 直
+ramp-signal-2 = 直
+ramp-signal-3 = 直
+ramp-signal-4 = 直
+ramp-signal-foreground = ${colors.foreground-alt}
+
+[module/eth]
+type = internal/network
+interface = enp0s31f6
+interval = 3.0
+
+format-connected-underline = #55aa55
+format-connected-prefix = " "
+format-connected-prefix-foreground = ${colors.foreground-alt}
+label-connected = %local_ip%
+
+format-disconnected =
+
+[module/unread_mail]
+type = custom/script
+
+format-underline = #f50a4d
+format-prefix = " "
+format-prefix-foreground = ${colors.foreground-alt}
+format = <label>
+
+click-left = xdg-open http://outlook.com &
+exec = python /home/lorago/.config/polybar/scripts/UnseenMail/UnseenMail.py
+interval = 100
+
+[module/date]
+type = internal/date
+interval = 5
+
+date =
+date-alt = " %Y-%m-%d"
+
+time = %H:%M
+time-alt = %H:%M:%S
+
+format-prefix = 
+format-prefix-foreground = ${colors.foreground-alt}
+format-underline = #0a6cf5
+
+label = %date% %time%
+
+[module/pulseaudio]
+type = internal/pulseaudio
+
+label-volume = %{F#666}墳%{F-} %percentage%%
+label-volume-foreground = ${root.foreground}
+
+label-muted = 婢 muted
+label-muted-foreground = #666
+
+bar-volume-width = 10
+bar-volume-foreground-0 = #55aa55
+bar-volume-foreground-1 = #55aa55
+bar-volume-foreground-2 = #55aa55
+bar-volume-foreground-3 = #55aa55
+bar-volume-foreground-4 = #55aa55
+bar-volume-foreground-5 = #f5a70a
+bar-volume-foreground-6 = #ff5555
+bar-volume-gradient = false
+bar-volume-indicator = |
+bar-volume-indicator-font = 2
+bar-volume-fill = ─
+bar-volume-fill-font = 2
+bar-volume-empty = ─
+bar-volume-empty-font = 2
+bar-volume-empty-foreground = ${colors.foreground-alt}
+
+[module/battery]
+type = internal/battery
+battery = BAT0
+adapter = AC
+full-at = 98
+
+format-charging = <animation-charging> <label-charging>
+format-charging-underline = #ffb52a
+
+format-discharging = <animation-discharging> <label-discharging>
+format-discharging-underline = ${self.format-charging-underline}
+
+format-full-prefix = " "
+format-full-prefix-foreground = ${colors.foreground-alt}
+format-full-underline = ${self.format-charging-underline}
+
+ramp-capacity-0 = 
+ramp-capacity-1 = 
+ramp-capacity-2 = 
+ramp-capacity-foreground = ${colors.foreground-alt}
+
+animation-charging-0 = 
+animation-charging-1 = 
+animation-charging-2 = 
+animation-charging-foreground = ${colors.foreground-alt}
+animation-charging-framerate = 750
+
+animation-discharging-0 = 
+animation-discharging-1 = 
+animation-discharging-2 = 
+animation-discharging-foreground = ${colors.foreground-alt}
+animation-discharging-framerate = 750
+
+[module/temperature]
+type = internal/temperature
+thermal-zone = 8
+warn-temperature = 60
+
+format = <ramp> <label>
+format-underline = #f50a4d
+format-warn = <ramp> <label-warn>
+format-warn-underline = ${self.format-underline}
+
+label = %temperature-c%
+label-warn = %temperature-c%
+label-warn-foreground = ${colors.secondary}
+
+ramp-0 = 
+ramp-1 = 
+ramp-2 = 
+ramp-foreground = ${colors.foreground-alt}
+
+[module/ram]
+type = custom/script
+
+exec = free -h | awk '/^Mem:/ {print $3 "/" $2}'
+interval = 3
+format-underline = #e68186
+click-left = ps axch -o cmd:14,%mem --sort=-%mem | head | dmenu -fn "Roboto-10" -nb "#000000"
+
+[module/cpu]
+type = custom/script
+
+exec = sensors | awk '/^Tctl:/ {print $2}'
+interval = 3
+format-underline = #71bdf2
+
+
+
+[settings]
+screenchange-reload = true
+
+[global/wm]
+margin-top = 0
+margin-bottom = 0
+
+
