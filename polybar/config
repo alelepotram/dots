@@ -109,18 +109,6 @@ label-connected = %local_ip%
 
 format-disconnected =
 
-[module/unread_mail]
-type = custom/script
-
-format-underline = #f50a4d
-format-prefix = " "
-format-prefix-foreground = ${colors.foreground-alt}
-format = <label>
-
-click-left = xdg-open http://outlook.com &
-exec = python /home/lorago/.config/polybar/scripts/UnseenMail/UnseenMail.py
-interval = 100
-
 [module/date]
 type = internal/date
 interval = 5
@@ -196,25 +184,6 @@ animation-discharging-2 = 
 animation-discharging-foreground = ${colors.foreground-alt}
 animation-discharging-framerate = 750
 
-[module/temperature]
-type = internal/temperature
-thermal-zone = 8
-warn-temperature = 60
-
-format = <ramp> <label>
-format-underline = #f50a4d
-format-warn = <ramp> <label-warn>
-format-warn-underline = ${self.format-underline}
-
-label = %temperature-c%
-label-warn = %temperature-c%
-label-warn-foreground = ${colors.secondary}
-
-ramp-0 = 
-ramp-1 = 
-ramp-2 = 
-ramp-foreground = ${colors.foreground-alt}
-
 [module/ram]
 type = custom/script
 
@@ -229,8 +198,6 @@ type = custom/script
 exec = sensors | awk '/^Tctl:/ {print $2}'
 interval = 3
 format-underline = #71bdf2
-
-
 
 [settings]
 screenchange-reload = true
