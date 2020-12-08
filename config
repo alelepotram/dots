@@ -1,0 +1,208 @@
+[colors]
+
+;background = ${xrdb:color0:#222}
+transparent = #00000000
+background = ${xrdb:color0}
+background-alt = #444
+;foreground = ${xrdb:color7:#222}
+foreground = ${xrdb:color0}
+foreground-alt = #c179d9
+primary = #4f9ea8
+secondary = #e60053
+alert = #bd2c40
+
+[bar/mybar]
+
+bottom = false
+
+fixed-center = true
+
+height = 30
+width = 100%
+padding-right = 1
+padding-left = 1
+border-size = 3
+border-color = ${colors.background}
+module-margin-left = 2
+module-margin-right = 2
+
+background = ${colors.background}
+foreground = ${colors.foreground}
+
+font-0 = Roboto:pixelsize=14;2
+;font-1 = Symbols Nerd Font:size=10;2
+font-1 =Wuncon Siji:pixelsize=22;2
+font-2 = Symbols Nerd Font:size=10;2
+;font-2 = Source Code Pro:semibold:size=09;2
+
+modules-left = battery pulseaudio pcu spotify xwindow  
+modules-right = ram temperature date  wireless-network 
+modules-center = bspwm
+
+tray-position = right
+tray-maxsize = 16
+
+
+[module/bspwm]
+type                      = internal/bspwm
+label-focused             = 
+label-focused-padding     = 2
+label-focused-foreground  = #b877db
+label-occupied            = 
+label-occupied-padding    = 2
+label-occupied-foreground = ${xrdb:color3} 
+label-urgent              = 
+label-urgent-padding      = 2
+label-urgent-foreground   = #f43e5c
+label-empty               = 
+label-empty-padding       = 2
+label-empty-foreground    = #6c6f93
+pin-workspaces = true
+
+[module/backlight]
+type = internal/backlight
+card = intel_backlight
+format = <label>
+label =  %percentage%%
+label-background = #25b0bc
+label-padding = 1
+
+[module/xwindow]
+type = internal/xwindow
+label = %title:0:30:...%
+label-foreground = ${xrdb:color3}
+
+[module/pulseaudio]
+type = internal/pulseaudio
+
+sink = alsa_output.pci-0000_00_1b.0.analog-stereo
+
+format-volume = <label-volume>
+label-muted = 
+label-volume =  %percentage%%
+label-volume-background = #21bfc2
+label-muted-background = #21bfc2
+label-muted-padding = 1
+label-volume-padding = 1
+
+[module/battery]
+type = internal/battery
+
+battery = BAT0
+adapter = ADP0
+
+poll-interval = 5
+
+full-at = 99
+
+time-format = %H:%M
+
+label-discharging =  %percentage%% 
+label-charging =  %percentage%%
+label-full = %percentage%%
+label-charging-foreground = #1c1e26
+label-charging-background = #fab795
+label-discharging-foreground = #1c1e26
+label-discharging-background = #fab795
+label-full-foreground = #1c1e26
+label-full-background = #fab795
+label-charging-padding = 1
+label-full-padding = 1
+label-discharging-padding = 1
+
+format-discharging = <label-discharging>
+format-full = <label-full>
+format-charging = <label-charging>
+
+[module/cpu]
+type = internal/cpu
+interval = 0.5
+format = <label>
+label =  %percentage%%
+label-background = #09f7a0
+label-padding = 1
+
+[module/memory]
+type = internal/memory
+interval = 3
+format = <label>
+label =  %gb_used%/%gb_total%
+exec = free -h | awk '/^Mem:/ {print $3 "/" $2}'
+label-background = #b877db
+label-padding = 1
+
+[module/ram]
+type = custom/script
+
+exec = echo " $(free -h | awk '/^Mem:/ {print $3 "/" $2}')"
+interval = 3
+label-background = #b877db
+click-left = ps axch -o cmd:14,%mem --sort=-%mem | head | dmenu -fn "Roboto-10" -nb "#000000"
+label-padding = 1
+
+[module/date]
+type = internal/date
+label =  %date% %time%
+interval = 1.0
+date = %d-%m-%Y
+time = %H:%M
+date-alt = %A, %d %B %Y
+time-alt = %I:%M:%S
+format = <label>
+label-background = #27d796
+label-padding = 1
+
+[module/pcu]
+type = custom/script
+exec = sensors | awk '/^Tctl:/ {print $2}'
+interval = 3
+label-background = #FE9BD0
+label-padding = 1
+
+[module/wired-network]
+type = internal/network
+interface = enp2s0
+label-connected =  %essid%
+label-connected-background = #e95678
+label-connected-padding = 1
+label-disconnected = 
+label-disconnected-background = #e95678
+label-disconnected-padding = 1
+
+[module/wireless-network]
+type = internal/network
+interface = wlp1s0
+label-connected =  %essid%
+label-connected-background = #e95678
+label-connected-padding = 1
+label-disconnected = 
+label-disconnected-background = #e95678
+label-disconnected-padding = 1
+
+[module/temperature]
+type = internal/temperature
+interval = 0.5
+thermal-zone = 0
+base-temperature = 20
+warn-temperature = 70
+format = <label>
+label =  %temperature-c%
+label-background = #25b0bc
+label-warn-background = #25b0bc
+label-padding = 1
+label-warn-padding = 1
+label-warn = %temperature-c%
+label-warn-foreground = #f00
+
+[module/spotify]
+type = custom/script
+interval = 1
+format = <label>
+exec = python /usr/bin/polybar-spotify -f '{song} - {artist}'
+label-background = #1DB954
+label-padding = 1
+click-left = dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Pause
+click-right = dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Play
+
+
+; vim: set ft=dosini nomodeline:
